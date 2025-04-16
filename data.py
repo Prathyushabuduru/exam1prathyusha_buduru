@@ -21,3 +21,63 @@ headers = ["symboling","normalized-losses","make","fuel-type","aspiration", "num
 df = pd.read_csv(filename, names = headers)
 
 df
+
+# exam1prathyusha.py
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+st.set_page_config(page_title="Exam 1 - Prathyusha", layout="wide")
+
+st.title("🚗 Exam 1 - Prathyusha's Data App")
+
+# Load CSV
+@st.cache_data
+def load_data():
+    return pd.read_csv("final_data.csv")
+
+df = load_data()
+
+# Dataset Preview
+st.subheader("🔍 Dataset Preview")
+st.dataframe(df.head())
+
+# Summary Statistics
+st.subheader("📊 Summary Statistics")
+st.write(df.describe())
+
+# Column selection for plotting
+numeric_cols = df.select_dtypes(include='number').columns.tolist()
+if numeric_cols:
+    selected_col = st.selectbox("Select a numeric column for visualization", numeric_cols)
+
+    # Histogram
+    st.subheader(f"📈 Histogram of {selected_col}")
+    fig1, ax1 = plt.subplots()
+    sns.histplot(df[selected_col], kde=True, ax=ax1)
+    ax1.set_xlabel(selected_col)
+    ax1.set_ylabel("Frequency")
+    st.pyplot(fig1)
+
+    # Boxplot
+    st.subheader(f"📦 Boxplot of {selected_col}")
+    fig2, ax2 = plt.subplots()
+    sns.boxplot(x=df[selected_col], ax=ax2)
+    st.pyplot(fig2)
+
+    # Scatter with another variable
+    st.subheader("📌 Scatter Plot")
+    other_numeric = st.selectbox("Compare with another column", [col for col in numeric_cols if col != selected_col])
+    fig3, ax3 = plt.subplots()
+    sns.scatterplot(data=df, x=selected_col, y=other_numeric, ax=ax3)
+    st.pyplot(fig3)
+else:
+    st.warning("No numeric columns available for visualization.")
+
+# Optional filtering if 'price' column exists
+if 'price' in df.columns:
+    st.subheader("💰 Filter by Price")
+    max_price = st.slider("Select Maximum Price", float(df['price'].min()), float(df['price'].max()), float(df['price'].max()))
+    filtered_df = df[df['price'] <= max_price]
+    st.write(filtered_df)
