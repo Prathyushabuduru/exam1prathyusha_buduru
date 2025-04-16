@@ -7,21 +7,6 @@ Original file is located at
     https://colab.research.google.com/drive/1c94CTuPw6SjFdbmyhpZZW0hShdAlvglD
 """
 
-import pandas as pd
-import matplotlib.pylab as plt
-import numpy as np
-
-filename="https://raw.githubusercontent.com/klamsal/Fall2024Exam/refs/heads/main/auto.csv"
-
-headers = ["symboling","normalized-losses","make","fuel-type","aspiration", "num-of-doors","body-style",
-         "drive-wheels","engine-location","wheel-base", "length","width","height","curb-weight","engine-type",
-         "num-of-cylinders", "engine-size","fuel-system","bore","stroke","compression-ratio","horsepower",
-         "peak-rpm","city-mpg","highway-mpg","price"]
-
-df = pd.read_csv(filename, names = headers)
-
-df
-
 # exam1prathyusha.py
 import streamlit as st
 import pandas as pd
@@ -35,7 +20,7 @@ st.title("🚗 Exam 1 - Prathyusha's Data App")
 # Load CSV
 @st.cache_data
 def load_data():
-    return pd.read_csv("final_data.csv")
+    return pd.read_csv("sample_auto_data.csv")
 
 df = load_data()
 
